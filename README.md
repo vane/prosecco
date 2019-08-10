@@ -3,7 +3,7 @@ prosecco
 
 ## Description
 
-Short, flexible and extendable NLP engine that can produce list of features 
+Slim, flexible and extendable NLP engine that can produce list of features 
 from text based on provided condtions.  
 
 ## Features
