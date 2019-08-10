@@ -12,7 +12,7 @@ from text based on provided condtions.
 
 ## Download
 ```bash
-git clone
+pip install prosecco
 ```
 ## Usage
 
