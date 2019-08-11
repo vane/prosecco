@@ -8,26 +8,8 @@ __version__ = "0.0.3"
 import os
 import os.path
 import sys
-from lib.model import Charset, Condition, Token, Lemma
-
-
-# -------------
-# Charset
-# -------------
-class CharsetNormalizer:
-    def __init__(self, charset):
-        self.charset = charset
-
-    def normalize(self, word):
-        out = ""
-        for character in word:
-            if character in self.charset:
-                if character.istitle():
-                    character = self.charset[character].upper()
-                else:
-                    character = self.charset[character]
-            out += character
-        return out
+from lib.model import *
+from lib.normalizer import *
 
 
 # -------------
