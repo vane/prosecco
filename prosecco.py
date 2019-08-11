@@ -8,36 +8,26 @@ Use it for :
 """
 __version__ = "0.0.3"
 import os
-import re
 import sys
+from lib.model import Charset, Condition, Token, Lemma
 
 
 # -------------
 # Charset
 # -------------
-class Charset:
-    """
-    Provides information about character set for LanguageTokenizer
-    All other characters will be treet as single tokens
-    """
-    EN = "qwertyuiopasdfghjklzxcvbnm1234567890"
-    PL = EN+"ęóąśłżźćń"
-    PL_EN = { "ę": "e", "ó": "o", "ą": "a", "ś": "s", "ł": "l", "ż": "z", "ź": "z", "ć": "c", "ń": "n", }
-
-
 class CharsetNormalizer:
     def __init__(self, charset):
         self.charset = charset
 
     def normalize(self, word):
         out = ""
-        for c in word:
-            if c in self.charset:
-                if c.istitle():
-                    c = self.charset[c].upper()
+        for character in word:
+            if character in self.charset:
+                if character.istitle():
+                    character = self.charset[character].upper()
                 else:
-                    c = self.charset[c]
-            out += c
+                    character = self.charset[character]
+            out += character
         return out
 
 
@@ -79,15 +69,15 @@ class LanguageTokenizer:
     def tokenize(self, text):
         tokens = []
         partial = ""
-        for c in text:
+        for i, character in enumerate(text):
             # pick
-            if c.lower() in self.charset:
-                partial += c
+            if character.lower() in self.charset:
+                partial += character
             else:
                 if len(partial) > 0:
-                    tokens.append(partial)
+                    tokens.append(Token(token=partial, end=i))
                     partial = ""
-                tokens.append(c)
+                tokens.append(Token(token=character, end=i))
         return tokens
 
 
@@ -105,11 +95,7 @@ class Visitor:
         self.empty = empty
         self.auto_space = auto_space
         self.lemma = None
-        self.item_index = 0
         self.num_words = num_words
-
-    def filter_space(self, data):
-        return list(filter(lambda x: x != " ", data))
 
     def __contains__(self, item):
         # get items of size num_words
@@ -117,26 +103,19 @@ class Visitor:
         while len(item_copy) > 0:
             # make sentence from list of item
             if self.auto_space:
-                data = self.filter_space(item_copy)
-                sentence = " ".join(data)
+                data = Lemma.filter_space(item_copy)
+                sentence = Lemma.build_sentence(data, separator=" ")
             else:
-                sentence = " ".join(item_copy)
+                sentence = Lemma.build_sentence(item_copy)
             item_copy.pop(0)
             # check sentence against conditions
             for condition in self.conditions:
                 if condition == sentence:
-                    self.lemma = Lemma(type=condition.lemma_type, data=sentence, condition=condition)
+                    self.lemma = Lemma(type=condition.lemma_type,
+                                       data=item_copy[:],
+                                       condition=condition,
+                                       sentence=sentence)
                     return True
-        # now iterate every word
-        for i in range(self.item_index, len(item)):
-            word = item[i]
-            for condition in self.conditions:
-                if condition == word:
-                    self.lemma = Lemma(type=condition.lemma_type, data=word, condition=condition)
-                    return True
-        # keep last iteration so it's faster
-        if self.empty:
-            self.item_index = len(item)
         return False
 
 
@@ -160,58 +139,6 @@ class Lexer:
             if progress:
                 sys.stdout.write("\r{}%".format(int(i/len(self.tokens)*100)))
         return lemma_list
-
-
-# -------------
-# Lemma
-# -------------
-
-class LemmaType:
-    SKIP = "skip"
-    KEY = "key"
-
-class Lemma:
-    """Base lemma class output for lexer"""
-    def __init__(self, type, data, condition):
-        self.type = type
-        self.data = data
-        self.condition = condition
-
-    def __repr__(self):
-        return "{}[{}]".format(self.data, self.type)
-
-    def __eq__(self, other):
-        return self.data == other
-
-    def __ne__(self, other):
-        return self.data != other
-
-    def __hash__(self):
-        # hack for set comparasion - probably need some smarter way to do it
-        return 1
-
-class Condition:
-    """Base condition class contain compare statement"""
-    def __init__(self, lemma_type=LemmaType.SKIP, compare=None, normalizer=None, stemmer=None, lower=False):
-        self.lemma_type = lemma_type
-        self.lower = lower
-        self.compare = compare
-        self.normalizer = normalizer
-        self.stemmer = stemmer
-
-    def __eq__(self, data):
-        if self.lower:
-            data = data.lower()
-        if self.normalizer:
-            data = self.normalizer.normalize(data)
-        if self.stemmer:
-            words = self.stemmer.stem(data)
-            # we got list of words so compare if we found one
-            for word in words:
-                if word == self.compare:
-                    return True
-        # regex comparasion
-        return re.match(self.compare, data)
 
 
 # -------------
