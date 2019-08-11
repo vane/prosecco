@@ -14,8 +14,8 @@ Can be used to build chat bots, question answer machines (see [example/qa.py](ht
 
 Can extract words or even whole sentences in ordered manner.  
 Provides position of found text.  
-Has build in ```Condition``` class that can mark data using regex or string comparasion.
-Can easily replace each part of it.  
+Has build in ```Condition``` class that can mark data using regex or string comparasion.  
+Can quick and easy replace or extend each part of it.  
 See [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/example/custom_condition_class.py) to  build your own conditions simply by adding 3 properties and overloading ```__contains__``` method.
 
 
