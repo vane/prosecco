@@ -22,7 +22,7 @@ pip install prosecco
 from prosecco import Prosecco, Condition
 
 # Read wikipedia https://en.wikipedia.org/wiki/Superhero
-with open('sample/superhero.txt') as f:
+with open("superhero.txt") as f:
     text = f.read()
 
 # 1. Create conditions with hero names

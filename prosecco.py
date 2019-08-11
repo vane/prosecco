@@ -6,6 +6,7 @@ Simple text data parser that can extract parts of text based on provided conditi
 
 __version__ = "0.0.3"
 import os
+import os.path
 import sys
 from lib.model import Charset, Condition, Token, Lemma
 
@@ -41,7 +42,7 @@ class WordStemmer:
         self.language = language
         self.stemwords = ()
         if path is None:
-            path = "data/{}/suffix.txt".format(language)
+            path = os.path.dirname(__file__)+"/data/{}/suffix.txt".format(language)
         with open(path) as f:
             # read file strip \n sort by length and save as tuple
             w = [w.strip() for w in f.readlines()]
