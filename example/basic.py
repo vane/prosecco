@@ -10,7 +10,7 @@ with open("superhero.txt") as f:
 conditions = [
     Condition(lemma_type="hero|dc", compare=["batman", "superman", "wonder woman"], lower=True),
     Condition(lemma_type="hero|marvel", normalizer=EnglishWordNormalizer(),
-              compare=["spiderman", "captain marvel", "black panther"], lower=True)
+              compare=["spiderman", "iron man", "black panther"], lower=True)
 ]
 # 2. Create prosecco
 p = Prosecco(conditions=conditions)
