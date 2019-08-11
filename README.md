@@ -8,7 +8,7 @@ prosecco
   
 ## Description
 
-Simple NLP engine that can produce list of features from text based on provided condtions.  
+Simple text data parser that can extract parts of text based on provided conditons.  
  
 
 ## Install
