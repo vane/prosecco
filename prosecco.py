@@ -70,7 +70,7 @@ class Visitor:
     Utility class for Lexer that use Condition class to check wheather
     we add Lemma to Lexer output or process list of tokens further
     """
-    def __init__(self, conditions, empty=True, auto_space=True, num_words=10):
+    def __init__(self, conditions, empty=True, auto_space=False, num_words=10):
         self.conditions = conditions
         # empty lexer token list
         self.empty = empty
