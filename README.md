@@ -57,12 +57,12 @@ Tak, jeśli mam szczęśliwy być, to w Gdańsku muszę żyć!
 cities = ["szczebrzeszyn", "pacanow", "gdansk", "rzym", "krym"]
 animals = ["koz", "chrzaszcz"]
 # 2. Normalizer to remove polish specific charset
-normalizer = CharsetNormalizer(Charset.PL_EN)
+n = CharsetNormalizer(Charset.PL_EN)
 # 3. Stemmer to remove suffix
-stemmer = SuffixStemmer(language="pl")
+s = SuffixStemmer(language="pl")
 # 4. Conditions for city and animal
-city_condition = Condition(lemma_type="city", compare=cities, normalizer=normalizer, stemmer=stemmer, lower=True)
-animal_condition = Condition(lemma_type="animal", compare=animals, normalizer=normalizer, stemmer=stemmer, lower=True)
+city_condition = Condition(lemma_type="city", compare=cities, normalizer=n, stemmer=s, lower=True)
+animal_condition = Condition(lemma_type="animal", compare=animals, normalizer=n, stemmer=s, lower=True)
 conditions = [city_condition, animal_condition]
 # 5. Create tokenizer for polish charset
 tokenizer = LanguageTokenizer(Charset.PL)
@@ -84,6 +84,7 @@ print(" ".join(map(str, found)))
 
 ### Output
 ```bash
-Szczebrzeszynie[city][start:29] Rzym[city][start:86] Krym[city][start:98] Pacanowie[city][start:106] Gdańsku[city][start:163]
+Szczebrzeszynie[city][start:29] Rzym[city][start:86] Krym[city][start:98] Pacanowie[city][start:106] 
+Gdańsku[city][start:163]
 Chrząszcz[animal][start:0] kozy[animal][start:116]
 ```
