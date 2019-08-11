@@ -10,7 +10,7 @@ from text based on provided condtions.
 - word categorisation
 - feature extraction 
 
-## Download
+## Install
 ```bash
 pip install prosecco
 ```
@@ -18,11 +18,38 @@ pip install prosecco
 
 ```bash
 python example.py
+python example_basic.py
 ```
 
-### or
+## Examples
+
+### Basic
+```python
+from prosecco import Prosecco, Condition
+
+# Read wikipedia https://en.wikipedia.org/wiki/Superhero
+with open('sample/superhero.txt') as f:
+    text = f.read()
+
+# 1. Create conditions based on super hero names
+superheroes = ["batman", "spiderman", "superman", "captain marvel", "black panther"]
+conditions = [Condition(lemma_type="hero", compare=hero, lower=True) for hero in superheroes]
+# 2. Create prosecco
+p = Prosecco(conditions=conditions)
+# 3. Let's drink and print output
+p.drink(text, progress=True)
+lemmas = set(p.get_lemmas(type='hero'))
+print(" ".join(map(str, lemmas)))
+```
+
+### Output
+```Batman[hero] Black Panther[hero] Superman[hero] Captain Marvel[hero]```
+
+### Advanced
 
 ```python
+from prosecco import *
+
 text = """Chrząszcz brzmi w trzcinie w Szczebrzeszynie.
 Ząb zupa zębowa, dąb zupa dębowa.
 Gdzie Rzym, gdzie Krym. W Pacanowie kozy kują.
@@ -38,9 +65,6 @@ for city in cities:
                                 normalizer=CharsetNormalizer(Charset.PL_EN),
                                 stemmer=WordStemmer(language="pl"),
                                 lower=True))
-# accept all words
-conditions.append(Condition(compare=r".*"))
-
 # 2. Create tokenizer for polish charset
 tokenizer = LanguageTokenizer(Charset.PL)
 # 3. Get list of tokens
@@ -52,10 +76,10 @@ lexer = Lexer(tokens=tokens, visitor=visitor)
 # 6. Get list of lemmas
 lemmas = lexer.lex()
 # 7. filter found cities
-found_cities = filter(lambda l: l.type == 'city', lemmas)
+found_cities = filter(lambda l: l.type == "city", lemmas)
 # 8. print output
 print(" ".join(map(str, found_cities)))
 ```   
 
-## Output
-`Szczebrzeszynie[city] Rzym[city] Krym[city] Pacanowie[city] Gdańsku[city]`
+### Output
+```Szczebrzeszynie[city] Rzym[city] Krym[city] Pacanowie[city] Gdańsku[city]```

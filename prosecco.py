@@ -9,6 +9,7 @@ Use it for :
 __version__ = '0.0.2'
 import os
 import re
+import sys
 
 
 # -------------
@@ -98,26 +99,44 @@ class Visitor:
     Utility class for Lexer that use Condition class to check wheather
     we add Lemma to Lexer output or process list of tokens further
     """
-    def __init__(self, conditions, empty=True, auto_space=True):
+    def __init__(self, conditions, empty=True, auto_space=True, num_words=10):
         self.conditions = conditions
         # empty lexer token list
         self.empty = empty
         self.auto_space = auto_space
         self.lemma = None
+        self.item_index = 0
+        self.num_words = num_words
 
     def filter_space(self, data):
         return list(filter(lambda x: x != " ", data))
 
     def __contains__(self, item):
-        if self.auto_space:
-            data = self.filter_space(item)
-            sentence = " ".join(data)
-        else:
-            sentence = " ".join(item)
-        for condition in self.conditions:
-            if condition == sentence:
-                self.lemma = Lemma(type=condition.lemma_type, data=sentence)
-                return True
+        # get items of size num_words
+        item_copy = item[-self.num_words:]
+        while len(item_copy) > 0:
+            # make sentence from list of item
+            if self.auto_space:
+                data = self.filter_space(item_copy)
+                sentence = " ".join(data)
+            else:
+                sentence = " ".join(item_copy)
+            item_copy.pop(0)
+            # check sentence against conditions
+            for condition in self.conditions:
+                if condition == sentence:
+                    self.lemma = Lemma(type=condition.lemma_type, data=sentence, condition=condition)
+                    return True
+        # now iterate every word
+        for i in range(self.item_index, len(item)):
+            word = item[i]
+            for condition in self.conditions:
+                if condition == word:
+                    self.lemma = Lemma(type=condition.lemma_type, data=word, condition=condition)
+                    return True
+        # keep last iteration so it's faster
+        if self.empty:
+            self.item_index = len(item)
         return False
 
 
@@ -129,15 +148,17 @@ class Lexer:
         self.tokens = tokens
         self.visitor = visitor
 
-    def lex(self):
+    def lex(self, progress=False):
         lemma_list = []
         token_list = []
-        for token in self.tokens:
+        for i, token in enumerate(self.tokens):
             token_list.append(token)
             if token_list in self.visitor:
                 lemma_list.append(self.visitor.lemma)
                 if self.visitor.empty:
                     token_list = []
+            if progress:
+                sys.stdout.write("\r{}%".format(int(i/len(self.tokens)*100)))
         return lemma_list
 
 
@@ -151,13 +172,23 @@ class LemmaType:
 
 class Lemma:
     """Base lemma class output for lexer"""
-    def __init__(self, type, data):
+    def __init__(self, type, data, condition):
         self.type = type
         self.data = data
+        self.condition = condition
 
     def __repr__(self):
         return "{}[{}]".format(self.data, self.type)
 
+    def __eq__(self, other):
+        return self.data == other
+
+    def __ne__(self, other):
+        return self.data != other
+
+    def __hash__(self):
+        # hack for set comparasion - probably need some smarter way to do it
+        return 1
 
 class Condition:
     """Base condition class contain compare statement"""
@@ -181,3 +212,26 @@ class Condition:
                     return True
         # regex comparasion
         return re.match(self.compare, data)
+
+
+# -------------
+# Lemma
+# -------------
+class Prosecco:
+    """Let's drink"""
+    def __init__(self, charset=Charset.EN, conditions=None, num_words=10):
+        self.charset = charset
+        self.conditions = conditions or [Condition(compare=r".*")]
+        self.lemmas = []
+        self.num_words = num_words
+
+    def drink(self, text, progress=False):
+        tokenizer = LanguageTokenizer(self.charset)
+        tokens = tokenizer.tokenize(text)
+        visitor = Visitor(conditions=self.conditions, num_words=self.num_words)
+        lexer = Lexer(tokens=tokens, visitor=visitor)
+        self.lemmas = lexer.lex(progress=progress)
+        return self.lemmas[:]
+
+    def get_lemmas(self, type):
+        return filter(lambda l: l.type == type, self.lemmas)

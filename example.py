@@ -17,9 +17,6 @@ for city in cities:
                                 normalizer=CharsetNormalizer(Charset.PL_EN),
                                 stemmer=WordStemmer(language="pl"),
                                 lower=True))
-# accept all words
-conditions.append(Condition(compare=r".*"))
-
 # 2. Create tokenizer for polish charset
 tokenizer = LanguageTokenizer(Charset.PL)
 # 3. Get list of tokens
@@ -31,6 +28,6 @@ lexer = Lexer(tokens=tokens, visitor=visitor)
 # 6. Get list of lemmas
 lemmas = lexer.lex()
 # 7. filter found cities
-found_cities = filter(lambda l: l.type == 'city', lemmas)
+found_cities = filter(lambda l: l.type == "city", lemmas)
 # 8. print output
 print(" ".join(map(str, found_cities)))
