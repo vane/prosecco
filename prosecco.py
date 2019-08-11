@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Simple text data parser that can extract parts of text based on provided conditions.
+Simple text parser that can extract data based on provided conditions.
 """
 
 __version__ = "0.0.3"

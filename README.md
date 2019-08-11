@@ -8,7 +8,7 @@ prosecco
   
 ## Description
 
-Simple text data parser that can extract parts of text based on provided conditions.  
+Simple text parser that can extract data based on provided conditions.  
  
 
 ## Install
