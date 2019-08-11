@@ -19,15 +19,18 @@ pip install prosecco
 
 ### Basic
 ```python
-from prosecco import Prosecco, Condition
+from prosecco import Prosecco, Condition, EnglishWordNormalizer
 
 # Read wikipedia https://en.wikipedia.org/wiki/Superhero
 with open("superhero.txt") as f:
     text = f.read()
 
 # 1. Create conditions with hero names
-heroes = ["batman", "spiderman", "superman", "captain marvel", "black panther"]
-conditions = [Condition(lemma_type="hero", compare=hero, lower=True) for hero in heroes]
+conditions = [
+    Condition(lemma_type="hero|dc", compare=["batman", "superman", "wonder woman"], lower=True),
+    Condition(lemma_type="hero|marvel", normalizer=EnglishWordNormalizer(),
+              compare=["spiderman", "captain marvel", "black panther"], lower=True)
+]
 # 2. Create prosecco
 p = Prosecco(conditions=conditions)
 # 3. Let's drink and print output
@@ -37,7 +40,7 @@ print(" ".join(map(str, lemmas)))
 ```
 
 ### Output
-```Batman[hero][start:1090] Black Panther[hero][start:17691] Superman[hero][start:2071] Captain Marvel[hero][start:3703]```
+```Batman[hero|dc][start:1090] Wonder Woman[hero|dc][start:2101] Captain Marvel[hero|marvel][start:3703] Superman[hero|dc][start:2071] Spider-Man[hero|marvel][start:2081] Black Panther[hero|marvel][start:17691]```
 
 ### Advanced
 
@@ -50,29 +53,37 @@ Gdzie Rzym, gdzie Krym. W Pacanowie kozy kują.
 Tak, jeśli mam szczęśliwy być, to w Gdańsku muszę żyć! 
 """
 
-# 1. Create conditions with city names
+# 1. Create condition with city names
 cities = ["szczebrzeszyn", "pacanow", "gdansk", "rzym", "krym"]
-conditions = []
-for city in cities:
-    conditions.append(Condition(lemma_type="city",
-                                compare=city,
-                                normalizer=CharsetNormalizer(Charset.PL_EN),
-                                stemmer=WordStemmer(language="pl"),
-                                lower=True))
-# 2. Create tokenizer for polish charset
+animals = ["koz", "chrzaszcz"]
+# 2. Normalizer to remove polish specific charset
+normalizer = CharsetNormalizer(Charset.PL_EN)
+# 3. Stemmer to remove suffix
+stemmer = SuffixStemmer(language="pl")
+# 4. Conditions for city and animal
+city_condition = Condition(lemma_type="city", compare=cities, normalizer=normalizer, stemmer=stemmer, lower=True)
+animal_condition = Condition(lemma_type="animal", compare=animals, normalizer=normalizer, stemmer=stemmer, lower=True)
+conditions = [city_condition, animal_condition]
+# 5. Create tokenizer for polish charset
 tokenizer = LanguageTokenizer(Charset.PL)
-# 3. Get list of tokens
+# 6. Get list of tokens
 tokens = tokenizer.tokenize(text)
-# 4. Create visitor with conditions provided in step 1
+# 7. Create visitor with conditions provided in step 1
 visitor = Visitor(conditions=conditions)
-# 5. Parse tokens based on visitor conditions
+# 8. Parse tokens based on visitor conditions
 lexer = Lexer(tokens=tokens, visitor=visitor)
-# 6. Get list of lemmas
+# 9. Get list of lemmas
 lemmas = lexer.lex()
-# 7. filter found cities and print output
-found_cities = filter(lambda l: l.type == "city", lemmas)
-print(" ".join(map(str, found_cities)))
+# 10. filter found cities and print output
+found = filter(lambda l: l.type == "city", lemmas)
+print(" ".join(map(str, found)))
+# 11. filter found anumals and print output
+found = filter(lambda l: l.type == "animal", lemmas)
+print(" ".join(map(str, found)))
 ```   
 
 ### Output
-```Szczebrzeszynie[city][start:29] Rzym[city][start:86] Krym[city][start:98] Pacanowie[city][start:106] Gdańsku[city][start:163]```
+```bash
+Szczebrzeszynie[city][start:29] Rzym[city][start:86] Krym[city][start:98] Pacanowie[city][start:106] Gdańsku[city][start:163]
+Chrząszcz[animal][start:0] kozy[animal][start:116]
+```
