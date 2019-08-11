@@ -21,13 +21,6 @@ pip install prosecco
 ```
 ## Usage
 
-```bash
-python example.py
-python example_basic.py
-```
-
-## Examples
-
 ### Basic
 ```python
 from prosecco import Prosecco, Condition
@@ -43,7 +36,7 @@ conditions = [Condition(lemma_type="hero", compare=hero, lower=True) for hero in
 p = Prosecco(conditions=conditions)
 # 3. Let's drink and print output
 p.drink(text, progress=True)
-lemmas = set(p.get_lemmas(type='hero'))
+lemmas  = set(p.get_lemmas(type='hero'))
 print(" ".join(map(str, lemmas)))
 ```
 
