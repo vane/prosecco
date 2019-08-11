@@ -78,6 +78,8 @@ class Condition:
                  regex=False):
         self.lemma_type = lemma_type
         self.lower = lower
+        if isinstance(compare, str):
+            compare = (compare,)
         self.compare = compare
         self.normalizer = normalizer
         self.stemmer = stemmer
@@ -92,11 +94,18 @@ class Condition:
             words = self.stemmer.stem(data)
             # we got list of words so compare if we found one
             for word in words:
-                if self.regex and re.match(self.compare, word):
+                if self._compare(word):
                     return True
-                elif self.compare == word:
-                    return True
-        # regex comparasion
-        if self.regex:
-            return re.match(self.compare, data)
-        return self.compare == data
+        # comparasion
+        return self._compare(data)
+
+    def _compare(self, data):
+        for c in self.compare:
+            if self.regex and re.match(c, data):
+                return True
+            elif c == data:
+                return True
+        return False
+
+    def __repr__(self):
+        return "|".join(self.compare)
