@@ -4,7 +4,7 @@
 Simple, extendable nlp engine that can extract data based on provided conditions.
 """
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 import os
 import os.path
 import sys
