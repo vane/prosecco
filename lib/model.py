@@ -70,7 +70,8 @@ class Condition:
                  normalizer=None,
                  stemmer=None,
                  lower=False,
-                 regex=False):
+                 regex=False,
+                 until_character=False):
         self.lemma_type = lemma_type
         self.lower = lower
         if isinstance(compare, str):
@@ -79,28 +80,36 @@ class Condition:
         self.normalizer = normalizer
         self.stemmer = stemmer
         self.regex = regex
+        self.until_character = until_character
         self.found = None
 
     def __contains__(self, item):
+        sentence, next_token = item
         if self.lower:
-            item = item.lower()
+            sentence = sentence.lower()
         if self.normalizer:
-            item = self.normalizer.normalize(item)
+            sentence = self.normalizer.normalize(sentence)
         if self.stemmer:
-            words = self.stemmer.stem(item)
+            words = self.stemmer.stem(sentence)
             # we got list of words so compare if we found one
             for word in words:
-                if self._compare(word):
+                if self._compare(word, next_token):
                     return True
         # comparasion
-        return self._compare(item)
+        return self._compare(sentence, next_token)
 
-    def _compare(self, data):
+    def _compare(self, data, next_token=None):
         for c in self.compare:
             if self.regex and re.match(c, data):
+                # skip until next token is desired charater
+                if self.until_character and next_token != self.until_character:
+                    continue
                 self.found = c
                 return True
             elif c == data:
+                # skip until next token is desired charater
+                if self.until_character and next_token != self.until_character:
+                    continue
                 self.found = c
                 return True
         return False

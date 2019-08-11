@@ -83,7 +83,8 @@ class Visitor:
 
     def __contains__(self, item):
         # get items of size num_words
-        item_copy = item[-self.num_words:]
+        token_list, next_token = item
+        item_copy = token_list[-self.num_words:]
         while len(item_copy) > 0:
             # make sentence from list of item
             if self.auto_space:
@@ -93,7 +94,7 @@ class Visitor:
                 sentence = Lemma.build_sentence(item_copy)
             # check sentence against conditions
             for condition in self.conditions:
-                if sentence in condition:
+                if (sentence, next_token) in condition:
                     self.lemma = Lemma(type=condition.lemma_type,
                                        data=item_copy[:],
                                        condition=condition.found,
@@ -114,9 +115,14 @@ class Lexer:
     def lex(self, progress=False):
         lemma_list = []
         token_list = []
+        last_index = len(self.tokens) - 1
         for i, token in enumerate(self.tokens):
             token_list.append(token)
-            if token_list in self.visitor:
+            if i != last_index:
+                next_token = self.tokens[i+1]
+            else:
+                next_token = None
+            if (token_list, next_token) in self.visitor:
                 lemma_list.append(self.visitor.lemma)
                 if self.visitor.empty:
                     token_list = []
