@@ -48,7 +48,7 @@ print(" ".join(map(str, lemmas)))
 ```
 
 ### Output
-```Batman[hero] Black Panther[hero] Superman[hero] Captain Marvel[hero]```
+```Batman[hero][start:1090] Black Panther[hero][start:17691] Superman[hero][start:2071] Captain Marvel[hero][start:3703]```
 
 ### Advanced
 
@@ -87,4 +87,4 @@ print(" ".join(map(str, found_cities)))
 ```   
 
 ### Output
-```Szczebrzeszynie[city] Rzym[city] Krym[city] Pacanowie[city] Gdańsku[city]```
+```Szczebrzeszynie[city][start:29] Rzym[city][start:86] Krym[city][start:98] Pacanowie[city][start:106] Gdańsku[city][start:163]```
