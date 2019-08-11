@@ -8,7 +8,7 @@ Gdzie Rzym, gdzie Krym. W Pacanowie kozy kują.
 Tak, jeśli mam szczęśliwy być, to w Gdańsku muszę żyć! 
 """
 
-# 1. Create conditions based on city names
+# 1. Create conditions with city names
 cities = ["szczebrzeszyn", "pacanow", "gdansk", "rzym", "krym"]
 conditions = []
 for city in cities:
@@ -27,7 +27,6 @@ visitor = Visitor(conditions=conditions)
 lexer = Lexer(tokens=tokens, visitor=visitor)
 # 6. Get list of lemmas
 lemmas = lexer.lex()
-# 7. filter found cities
+# 7. filter found cities and print output
 found_cities = filter(lambda l: l.type == "city", lemmas)
-# 8. print output
 print(" ".join(map(str, found_cities)))
