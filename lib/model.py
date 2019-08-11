@@ -32,11 +32,6 @@ class Token:
         return self.token.lower()
 
 
-class LemmaType:
-    SKIP = "skip"
-    KEY = "key"
-
-
 class Lemma:
     """Base lemma class output for lexer"""
     def __init__(self, type, data, condition, sentence):
@@ -70,7 +65,7 @@ class Lemma:
 
 class Condition:
     """Base condition class contain compare statement"""
-    def __init__(self, lemma_type=LemmaType.SKIP,
+    def __init__(self, lemma_type="skip",
                  compare=None,
                  normalizer=None,
                  stemmer=None,
