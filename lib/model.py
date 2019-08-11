@@ -84,26 +84,29 @@ class Condition:
         self.normalizer = normalizer
         self.stemmer = stemmer
         self.regex = regex
+        self.found = None
 
-    def __eq__(self, data):
+    def __contains__(self, item):
         if self.lower:
-            data = data.lower()
+            item = item.lower()
         if self.normalizer:
-            data = self.normalizer.normalize(data)
+            item = self.normalizer.normalize(item)
         if self.stemmer:
-            words = self.stemmer.stem(data)
+            words = self.stemmer.stem(item)
             # we got list of words so compare if we found one
             for word in words:
                 if self._compare(word):
                     return True
         # comparasion
-        return self._compare(data)
+        return self._compare(item)
 
     def _compare(self, data):
         for c in self.compare:
             if self.regex and re.match(c, data):
+                self.found = c
                 return True
             elif c == data:
+                self.found = c
                 return True
         return False
 

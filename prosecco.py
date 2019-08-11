@@ -15,7 +15,7 @@ from lib.normalizer import *
 # -------------
 # Stemmer
 # -------------
-class WordStemmer:
+class SuffixStemmer:
     """
     Base class for stemming words
     Return tuple of stemmed outputs
@@ -88,15 +88,15 @@ class Visitor:
                 sentence = Lemma.build_sentence(data, separator=" ")
             else:
                 sentence = Lemma.build_sentence(item_copy)
-            item_copy.pop(0)
             # check sentence against conditions
             for condition in self.conditions:
-                if condition == sentence:
+                if sentence in condition:
                     self.lemma = Lemma(type=condition.lemma_type,
                                        data=item_copy[:],
-                                       condition=condition,
+                                       condition=condition.found,
                                        sentence=sentence)
                     return True
+            item_copy.pop(0)
         return False
 
 
