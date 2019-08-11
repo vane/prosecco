@@ -1,6 +1,11 @@
 prosecco
 ====
 
+[![GitHub](https://img.shields.io/github/license/vane/prosecco)](https://github.com/vane/prosecco/blob/master/LICENSE)
+[![pypi](https://img.shields.io/pypi/v/prosecco)](https://pypi.org/project/prosecco/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/vane/prosecco)](https://github.com/vane/prosecco)
+
+  
 ## Description
 
 Slim, flexible and extendable NLP engine that can produce list of features 
