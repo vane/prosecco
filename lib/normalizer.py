@@ -16,3 +16,8 @@ class CharsetNormalizer:
                     character = self.charset[character]
             out += character
         return out
+
+
+class EnglishWordNormalizer:
+    def normalize(self, word):
+        return word.replace("-", "").replace("'", "")
