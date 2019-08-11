@@ -5,11 +5,13 @@ from difflib import SequenceMatcher
 
 
 class SequenceMatcherCondition:
-    def __init__(self, compare, tolerance=0.90, lemma_type="test"):
+    def __init__(self, compare, lemma_type="test", tolerance=0.90):
+        # those 3 are required
         self.lemma_type = lemma_type
         self.compare = compare
-        self.tolerance = tolerance
         self.found = None
+        # added custom parameter
+        self.tolerance = tolerance
 
     def __contains__(self, item):
         sentence, next_token = item
