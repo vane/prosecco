@@ -215,7 +215,7 @@ class Condition:
 
 
 # -------------
-# Lemma
+# Prosecco
 # -------------
 class Prosecco:
     """Let's drink"""
