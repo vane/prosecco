@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Slim, flexible and extendable NLP engine that can produce list of features from text based on provided condtions.
-Use it for :
-- word categorisation
-- feature extraction
+Simple NLP engine that can produce list of features from text based on provided condtions.
 """
+
 __version__ = "0.0.3"
 import os
 import sys

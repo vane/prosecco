@@ -12,7 +12,7 @@ setuptools.setup(
     version=prosecco.__version__,
     author="Michal Szczepanski",
     author_email="michal@vane.pl",
-    description="Slim, flexible and extendable NLP engine that can produce list of features from text based on provided condtions.",
+    description="Simple NLP engine that can produce list of features from text based on provided condtions.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license='MIT',

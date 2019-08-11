@@ -8,8 +8,7 @@ prosecco
   
 ## Description
 
-Slim, flexible and extendable NLP engine that can produce list of features 
-from text based on provided condtions.  
+Simple NLP engine that can produce list of features from text based on provided condtions.  
  
 
 ## Install
