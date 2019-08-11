@@ -12,12 +12,11 @@ NLP engine with text extraction capabilities that can be easily extended to desi
 
 Can be used to build chat bots, question answer machines (see [example/qa.py](https://github.com/vane/prosecco/blob/master/example/qa.py)), text converters.
 
-Can extract words or even whole sentences in ordered manner.
-Provides position of found text.
+Can extract words or even whole sentences in ordered manner.  
+Provides position of found text.  
 Has build in ```Condition``` class that can mark data using regex or string comparasion.
-But you can replace each part of it easily.
-for example : 
-Quick build custom condition class by adding 3 properties and overloading ```__contains__``` method (see [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/example/custom_condition_class.py)).
+Can easily replace each part of it.  
+See [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/example/custom_condition_class.py) to  build your own conditions simply by adding 3 properties and overloading ```__contains__``` method.
 
 
 ## Install
