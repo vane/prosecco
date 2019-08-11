@@ -12,7 +12,7 @@ setuptools.setup(
     version=prosecco.__version__,
     author="Michal Szczepanski",
     author_email="michal@vane.pl",
-    description="Simple text parser that can extract data based on provided conditions.",
+    description="Simple, extendable nlp engine that can extract data based on provided conditions.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license='MIT',

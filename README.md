@@ -8,7 +8,7 @@ prosecco
   
 ## Description
 
-Simple text parser that can extract data based on provided conditions.  
+Simple, extendable nlp engine that can extract data based on provided conditions.  
  
 
 ## Install

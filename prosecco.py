@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Simple text parser that can extract data based on provided conditions.
+Simple, extendable nlp engine that can extract data based on provided conditions.
 """
 
 __version__ = "0.0.3"
