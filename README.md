@@ -10,10 +10,7 @@ prosecco
 
 Slim, flexible and extendable NLP engine that can produce list of features 
 from text based on provided condtions.  
-
-## Features
-- word categorisation
-- feature extraction 
+ 
 
 ## Install
 ```bash
