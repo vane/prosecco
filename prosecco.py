@@ -8,6 +8,7 @@ __version__ = "0.0.3"
 import os
 import os.path
 import sys
+import re
 from lib.model import *
 from lib.normalizer import *
 
@@ -142,4 +143,4 @@ class Prosecco:
         return self.lemmas[:]
 
     def get_lemmas(self, type):
-        return filter(lambda l: l.type == type, self.lemmas)
+        return filter(lambda l: re.match(type, l.type), self.lemmas)
