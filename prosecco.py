@@ -6,7 +6,7 @@ Use it for :
 - word categorisation
 - feature extraction
 """
-__version__ = '0.0.3'
+__version__ = "0.0.3"
 import os
 import re
 import sys
@@ -21,7 +21,7 @@ class Charset:
     All other characters will be treet as single tokens
     """
     EN = "qwertyuiopasdfghjklzxcvbnm1234567890"
-    PL = EN+'ęóąśłżźćń'
+    PL = EN+"ęóąśłżźćń"
     PL_EN = { "ę": "e", "ó": "o", "ą": "a", "ś": "s", "ł": "l", "ż": "z", "ź": "z", "ć": "c", "ń": "n", }
 
 
