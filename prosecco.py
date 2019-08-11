@@ -60,6 +60,9 @@ class LanguageTokenizer:
                     tokens.append(Token(token=partial, end=i))
                     partial = ""
                 tokens.append(Token(token=character, end=i))
+        if len(partial) > 0:
+            tokens.append(Token(token=partial, end=i))
+            partial = ""
         return tokens
 
 
@@ -143,4 +146,4 @@ class Prosecco:
         return self.lemmas[:]
 
     def get_lemmas(self, type):
-        return filter(lambda l: re.match(type, l.type), self.lemmas)
+        return [l for l  in self.lemmas if re.match(type, l.type)]
