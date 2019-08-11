@@ -8,8 +8,17 @@ prosecco
   
 ## Description
 
-Simple, extendable nlp engine that can extract data based on provided conditions.  
- 
+NLP engine with text extraction capabilities that can be easily extended to desired needs.
+
+Can be used to build chat bots, question answer machines (see [example/qa.py](https://github.com/vane/prosecco/blob/master/example/qa.py)), text converters.
+
+Can extract words or even whole sentences in ordered manner.
+Provides position of found text.
+Has build in ```Condition``` class that can mark data using regex or string comparasion.
+But you can replace each part of it easily.
+for example : 
+Quick build custom condition class by adding 3 properties and overloading ```__contains__``` method (see [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/example/custom_condition_class.py)).
+
 
 ## Install
 ```bash
@@ -18,6 +27,7 @@ pip install prosecco
 ## Usage
 
 ### Basic
+[example/basic.py](https://github.com/vane/prosecco/blob/master/example/basic.py)
 ```python
 from prosecco import Prosecco, Condition, EnglishWordNormalizer
 
@@ -43,7 +53,7 @@ print(" ".join(map(str, lemmas)))
 ```Batman[hero|dc][start:1090] Wonder Woman[hero|dc][start:2101] Captain Marvel[hero|marvel][start:3703] Superman[hero|dc][start:2071] Spider-Man[hero|marvel][start:2081] Black Panther[hero|marvel][start:17691]```
 
 ### Advanced
-
+[example/advanced.py](https://github.com/vane/prosecco/blob/master/example/advanced.py)
 ```python
 from prosecco import *
 
