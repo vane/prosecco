@@ -70,12 +70,18 @@ class Lemma:
 
 class Condition:
     """Base condition class contain compare statement"""
-    def __init__(self, lemma_type=LemmaType.SKIP, compare=None, normalizer=None, stemmer=None, lower=False):
+    def __init__(self, lemma_type=LemmaType.SKIP,
+                 compare=None,
+                 normalizer=None,
+                 stemmer=None,
+                 lower=False,
+                 regex=False):
         self.lemma_type = lemma_type
         self.lower = lower
         self.compare = compare
         self.normalizer = normalizer
         self.stemmer = stemmer
+        self.regex = regex
 
     def __eq__(self, data):
         if self.lower:
@@ -86,7 +92,11 @@ class Condition:
             words = self.stemmer.stem(data)
             # we got list of words so compare if we found one
             for word in words:
-                if word == self.compare:
+                if self.regex and re.match(self.compare, word):
+                    return True
+                elif self.compare == word:
                     return True
         # regex comparasion
-        return re.match(self.compare, data)
+        if self.regex:
+            return re.match(self.compare, data)
+        return self.compare == data
