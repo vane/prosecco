@@ -3,7 +3,7 @@ prosecco
 
 [![GitHub](https://img.shields.io/github/license/vane/prosecco)](https://github.com/vane/prosecco/blob/master/LICENSE)
 [![pypi](https://img.shields.io/pypi/v/prosecco)](https://pypi.org/project/prosecco/)
-[![GitHub commits since tagged version](https://img.shields.io/github/commits-since/vane/prosecco/0.0.4)](https://github.com/vane/prosecco/compare/0.0.4...master)
+[![GitHub commits since tagged version](https://img.shields.io/github/commits-since/vane/prosecco/0.0.5)](https://github.com/vane/prosecco/compare/0.0.5...master)
 [![GitHub last commit](https://img.shields.io/github/last-commit/vane/prosecco)](https://github.com/vane/prosecco)
 
   
