@@ -57,7 +57,7 @@ class LanguageTokenizer:
                 partial += character
             else:
                 if len(partial) > 0:
-                    tokens.append(Token(token=partial, end=i))
+                    tokens.append(Token(token=partial, end=i-1))
                     partial = ""
                 tokens.append(Token(token=character, end=i))
         if len(partial) > 0:

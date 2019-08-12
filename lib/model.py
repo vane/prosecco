@@ -39,7 +39,10 @@ class Lemma:
         self.data = data
         self.condition = condition
         self.sentence = sentence
-        self.start = self.data[0].end - len(self.data[0])
+        if len(self.data[0]) == 1:
+            self.start = self.data[0].end
+        else:
+            self.start = self.data[0].end - len(self.data[0])
 
     @classmethod
     def filter_space(cls, data):
