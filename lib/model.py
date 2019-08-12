@@ -34,11 +34,13 @@ class Token:
 
 class Lemma:
     """Base lemma class output for lexer"""
-    def __init__(self, type, data, condition, sentence):
+    def __init__(self, type, data, condition, sentence, prev):
         self.type = type
         self.data = data
         self.condition = condition
         self.sentence = sentence
+        self.prev = prev
+        self.next = None
         if len(self.data[0]) == 1:
             self.start = self.data[0].end
         else:

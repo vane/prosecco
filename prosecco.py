@@ -79,6 +79,7 @@ class Visitor:
         self.empty = empty
         self.auto_space = auto_space
         self.lemma = None
+        self.prev = None
         self.num_words = num_words
 
     def __contains__(self, item):
@@ -98,7 +99,11 @@ class Visitor:
                     self.lemma = Lemma(type=condition.lemma_type,
                                        data=item_copy[:],
                                        condition=condition.found,
-                                       sentence=sentence)
+                                       sentence=sentence,
+                                       prev=self.prev)
+                    if self.prev is not None:
+                        self.prev.next = self.lemma
+                    self.prev = self.lemma
                     return True
             item_copy.pop(0)
         return False
@@ -151,4 +156,4 @@ class Prosecco:
         return self.lemmas[:]
 
     def get_lemmas(self, type):
-        return [l for l  in self.lemmas if re.match(type, l.type)]
+        return [l for l in self.lemmas if re.match(type, l.type)]
