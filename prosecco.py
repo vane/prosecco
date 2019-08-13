@@ -9,6 +9,7 @@ import os
 import os.path
 import sys
 import re
+import collections
 from lib.model import *
 from lib.normalizer import *
 
@@ -47,9 +48,11 @@ class LanguageTokenizer:
     """Tokenize string of data to array of tokens"""
     def __init__(self, charset):
         self.charset = charset
+        self.charset_counter = collections.Counter()
+        self.char_counter = collections.Counter()
+        self.tokens = []
 
     def tokenize(self, text):
-        tokens = []
         partial = ""
         for i, character in enumerate(text):
             # pick
@@ -57,13 +60,24 @@ class LanguageTokenizer:
                 partial += character
             else:
                 if len(partial) > 0:
-                    tokens.append(Token(token=partial, end=i-1))
+                    self.append(partial, i)
                     partial = ""
-                tokens.append(Token(token=character, end=i))
+                self.append(character, i, False)
         if len(partial) > 0:
-            tokens.append(Token(token=partial, end=i))
-        return tokens
+            self.append(partial, i)
+        return self.tokens
 
+    def append(self, data, index, charset=True):
+        if charset:
+            self.charset_counter[data.lower()] += 1
+        else:
+            self.char_counter[data.lower()] += 1
+        self.tokens.append(Token(token=data, end=index-1))
+
+    def most_common(self, n, charset=True):
+        if charset:
+            return self.charset_counter.most_common(n)
+        return self.char_counter.most_common(n)
 
 # -------------
 # Lexer / Visitor
@@ -142,17 +156,16 @@ class Lexer:
 class Prosecco:
     """Let's drink"""
     def __init__(self, charset=Charset.EN, conditions=None, num_words=10):
-        self.charset = charset
-        self.conditions = conditions or [Condition(compare=r".*")]
-        self.lemmas = []
-        self.num_words = num_words
+        conditions = conditions or [Condition(compare=r".*")]
+        # custom
+        self.lemmas = None
+        self.tokenizer = LanguageTokenizer(charset)
+        self.visitor = Visitor(conditions=conditions, num_words=num_words)
 
     def drink(self, text, progress=False):
-        tokenizer = LanguageTokenizer(self.charset)
-        tokens = tokenizer.tokenize(text)
-        visitor = Visitor(conditions=self.conditions, num_words=self.num_words)
-        lexer = Lexer(tokens=tokens, visitor=visitor)
-        self.lemmas = lexer.lex(progress=progress)
+        self.tokenizer.tokenize(text)
+        self.lexer = Lexer(tokens=self.tokenizer.tokens, visitor=self.visitor)
+        self.lemmas = self.lexer.lex(progress=progress)
         return self.lemmas[:]
 
     def get_lemmas(self, type):
