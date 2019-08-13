@@ -33,5 +33,8 @@ lemmas = lexer.lex()
 found = filter(lambda l: l.type == "city", lemmas)
 print(" ".join(map(str, found)))
 # 11. filter found anumals and print output
-found = filter(lambda l: l.type == "animal", lemmas)
+found = list(filter(lambda l: l.type == "animal", lemmas))
 print(" ".join(map(str, found)))
+# 12. print exact words from text
+for l in list(found):
+    print(text[l.start:l.start+len(l.sentence)])
