@@ -101,7 +101,7 @@ Chrząszcz
 kozy
 ```
 
-### QA
+### QA ( question answer machine )
 [example/qa.py](https://github.com/vane/prosecco/blob/master/example/qa.py)
 ```python
 from datetime import datetime
