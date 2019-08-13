@@ -44,7 +44,7 @@ class Lemma:
         if len(self.data[0]) == 1:
             self.start = self.data[0].end
         else:
-            self.start = self.data[0].end - len(self.data[0])
+            self.start = self.data[0].end - len(self.data[0]) + 1
 
     @classmethod
     def filter_space(cls, data):
