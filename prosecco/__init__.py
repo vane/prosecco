@@ -4,7 +4,7 @@
 Simple, extendable nlp engine that can extract data based on provided conditions.
 """
 
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 import os
 import os.path
 import sys
@@ -26,7 +26,7 @@ class SuffixStemmer:
         self.language = language
         self.stemwords = ()
         if path is None:
-            subpath = os.sep.join(os.path.dirname(__file__).split(os.sep)[:-1])
+            subpath = os.path.dirname(__file__)
             path = subpath+"/data/{}/suffix.txt".format(language)
         with open(path) as f:
             # read file strip \n sort by length and save as tuple
