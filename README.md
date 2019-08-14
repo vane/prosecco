@@ -11,12 +11,12 @@ prosecco
 
 NLP engine with text extraction capabilities that can be easily extended to desired needs.
 
-Can be used to build chat bots, question answer machines (see [example/qa.py](https://github.com/vane/prosecco/blob/master/example/qa.py)), text converters.
+Can be used to build chat bots, question answer machines (see [example/qa.py](https://github.com/vane/prosecco/blob/master/prosecco/example/qa.py)), text converters.
 
 Extract words or even whole sentences in ordered manner.  
 Get position of found text.  
 Use ```Condition``` class and mark data using regex or string comparasion.  
-Extend each part of it in easy manner. ( see [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/example/custom_condition_class.py)).
+Extend each part of it in easy manner. ( see [example/custom_condition_class.py](https://github.com/vane/prosecco/blob/master/prosecco/example/custom_condition_class.py)).
 
 ## Install
 ```bash
@@ -25,7 +25,7 @@ pip install prosecco
 ## Usage
 
 ### Basic
-[example/basic.py](https://github.com/vane/prosecco/blob/master/example/basic.py)
+[example/basic.py](https://github.com/vane/prosecco/blob/master/prosecco/example/basic.py)
 ```python
 from prosecco import Prosecco, Condition, EnglishWordNormalizer
 
@@ -51,7 +51,7 @@ print(" ".join(map(str, lemmas)))
 ```Batman[hero|dc][start:1089] Wonder Woman[hero|dc][start:2100] Iron Man[hero|marvel][start:2184] Superman[hero|dc][start:2070] Spider-Man[hero|marvel][start:2080] Black Panther[hero|marvel][start:17690]```
 
 ### Advanced
-[example/advanced.py](https://github.com/vane/prosecco/blob/master/example/advanced.py)
+[example/advanced.py](https://github.com/vane/prosecco/blob/master/prosecco/example/advanced.py)
 ```python
 from prosecco import *
 
@@ -102,7 +102,7 @@ kozy
 ```
 
 ### QA ( question answer machine )
-[example/qa.py](https://github.com/vane/prosecco/blob/master/example/qa.py)
+[example/qa.py](https://github.com/vane/prosecco/blob/master/prosecco/example/qa.py)
 ```python
 from datetime import datetime
 from prosecco import Prosecco, Condition, EnglishWordNormalizer, SuffixStemmer
