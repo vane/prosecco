@@ -4,14 +4,14 @@
 Simple, extendable nlp engine that can extract data based on provided conditions.
 """
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 import os
 import os.path
 import sys
 import re
 import collections
-from lib.model import *
-from lib.normalizer import *
+from .model import *
+from .normalizer import *
 
 
 # -------------
@@ -26,7 +26,8 @@ class SuffixStemmer:
         self.language = language
         self.stemwords = ()
         if path is None:
-            path = os.path.dirname(__file__)+"/data/{}/suffix.txt".format(language)
+            subpath = os.sep.join(os.path.dirname(__file__).split(os.sep)[:-1])
+            path = subpath+"/data/{}/suffix.txt".format(language)
         with open(path) as f:
             # read file strip \n sort by length and save as tuple
             w = [w.strip() for w in f.readlines()]
